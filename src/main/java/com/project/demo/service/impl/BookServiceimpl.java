@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.demo.dto.BookDto;
 import com.project.demo.entity.Book;
@@ -12,6 +13,7 @@ import com.project.demo.repository.BookRepository;
 import com.project.demo.service.BookService;
 
 @Service
+@Transactional
 public class BookServiceimpl implements BookService {
 	
 	private final BookRepository repository;
@@ -23,6 +25,7 @@ public class BookServiceimpl implements BookService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public BookDto getBookById(Long id) {
 
 		Book book = repository.findById(id)
@@ -32,11 +35,12 @@ public class BookServiceimpl implements BookService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<BookDto> getAllBooks() {
 
 			return repository.findAll()
 				.stream()
-				.map(MapperBook::toDto)
+				.map(mapper::toDto)
 				.collect(Collectors.toList());
 	}
 
@@ -54,17 +58,13 @@ public class BookServiceimpl implements BookService {
 		
 		Book book = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found with id " + id));
 		
-		book.builder()
-			.title(bookDto.getTitle())
-			.author(bookDto.getAuthor())
-			.publicationYear(bookDto.getPublicationYear())
-			.isbn(bookDto.getIsbnCode())
-			.dischargeDate(bookDto.getDischargeDate() != null ? java.time.LocalDate.parse(bookDto.getDischargeDate()) : null)
-			.build();
+			book.setTitle(bookDto.getTitle());
+			book.setAuthor(bookDto.getAuthor());
+			book.setPublicationYear(bookDto.getPublicationYear());
+			book.setIsbn(bookDto.getIsbnCode());
+			book.setDischargeDate(bookDto.getDischargeDate() != null ? java.time.LocalDate.parse(bookDto.getDischargeDate()) : null);
 		
-		Book saved = repository.save(book);
-		
-		return mapper.toDto(saved);
+		return mapper.toDto(book);
 			
 	}
 

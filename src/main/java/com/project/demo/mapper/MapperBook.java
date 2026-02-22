@@ -9,7 +9,7 @@ import com.project.demo.entity.Book;
 @Component
 public class MapperBook {
 
-	public static final MapperBook INSTANCE = new MapperBook();
+	//public static final MapperBook INSTANCE = new MapperBook();
 	
 	  /**
 	MapperBook INSTANCE = Mappers.getMapper(MapperBook.class);
@@ -30,7 +30,7 @@ public class MapperBook {
 	 **/
 	
 	
-	  public static BookDto toDto(Book bookEntity) { 
+	  public BookDto toDto(Book bookEntity) { 
 		  if(bookEntity == null) {
 			  return null; 
 			  }
@@ -42,12 +42,13 @@ public class MapperBook {
 			  .publicationYear(bookEntity.getPublicationYear())
 			  .price(bookEntity.getPrice()) 
 			  .dischargeDate( bookEntity.getDischargeDate()
-			  != null ? bookEntity.getDischargeDate().toString() : null) .isbnCode(null)
+			  != null ? bookEntity.getDischargeDate().toString() : null) 
+			  .isbnCode(bookEntity.getIsbn())
 			  .build(); 
 	  }
 	  
 	  
-	  public static Book toEntity(BookDto bookDto) {
+	  public Book toEntity(BookDto bookDto) {
 	  
 	  if(bookDto == null) { 
 		  return null; 
