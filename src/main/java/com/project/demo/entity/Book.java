@@ -33,13 +33,13 @@ public class Book {
 	@Column(name = "author")
 	private String author;
 	
-	@Column(name = "publicationYear")
+	@Column(name = "publication_year")
 	private Integer publicationYear;
 	
 	@Column(name = "price")
 	private Double price;
 	
-	@Column(name = "dischargeDate")
+	@Column(name = "discharge_date")
 	private LocalDate dischargeDate;
 	
 	@Column(name = "isbn")
