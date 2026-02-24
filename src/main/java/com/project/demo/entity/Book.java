@@ -2,6 +2,7 @@ package com.project.demo.entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,15 +27,21 @@ public class Book {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+	@Column(name = "title")
 	private String title;
 	
+	@Column(name = "author")
 	private String author;
 	
+	@Column(name = "publicationYear")
 	private Integer publicationYear;
 	
+	@Column(name = "price")
 	private Double price;
 	
+	@Column(name = "dischargeDate")
 	private LocalDate dischargeDate;
 	
+	@Column(name = "isbn")
 	private String isbn;
 }
