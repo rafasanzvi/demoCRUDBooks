@@ -43,6 +43,16 @@ public class BookServiceimpl implements BookService {
 				.map(mapper::toDto)
 				.toList();
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<BookDto> findByAuthor(String author) {
+		
+		return repository.findByAuthorContainingIgnoreCase(author)
+				.stream()
+				.map(mapper::toDto)
+				.toList();
+	}
 
 	@Override
 	@Transactional(readOnly = true)

@@ -42,6 +42,11 @@ public class BookController {
 		return ResponseEntity.ok(service.findByTitle(title));
 	}
 	
+	@GetMapping("/bookByAuthor")
+	public ResponseEntity<List<BookDto>> searchByAuthor(@RequestParam String author) {
+		return ResponseEntity.ok(service.findByTitle(author));
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<BookDto> createBook(@RequestBody BookDto bookDto){
 		return ResponseEntity.ok(service.createBook(bookDto));

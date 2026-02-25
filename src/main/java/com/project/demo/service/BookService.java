@@ -13,6 +13,8 @@ public interface BookService {
 	
 	List<BookDto> getAllBooks();
 	
+	List<BookDto> findByAuthor(String author);
+	
 	//Post
 	BookDto createBook(BookDto bookDto);
 	
