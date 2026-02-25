@@ -33,6 +33,16 @@ public class BookServiceimpl implements BookService {
 
 		return mapper.toDto(book);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<BookDto> findByTitle(String title) {
+
+		return repository.findByTitleContainingIgnoreCase(title)
+				.stream()
+				.map(mapper::toDto)
+				.toList();
+	}
 
 	@Override
 	@Transactional(readOnly = true)

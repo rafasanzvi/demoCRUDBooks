@@ -9,6 +9,8 @@ public interface BookService {
 	//Get
 	BookDto getBookById(Long id);
 	
+	List<BookDto> findByTitle(String title);
+	
 	List<BookDto> getAllBooks();
 	
 	//Post

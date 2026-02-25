@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,13 +37,18 @@ public class BookController {
 		return ResponseEntity.ok(service.getAllBooks());
 	}
 	
+	@GetMapping("/bookByTitle")
+	public ResponseEntity<List<BookDto>> searchByTitle(@RequestParam String title) {
+		return ResponseEntity.ok(service.findByTitle(title));
+	}
+	
 	@PostMapping("/create")
-	public ResponseEntity<BookDto> createBook(@RequestParam BookDto bookDto){
+	public ResponseEntity<BookDto> createBook(@RequestBody BookDto bookDto){
 		return ResponseEntity.ok(service.createBook(bookDto));
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<BookDto> updateBook(@RequestParam BookDto bookDto, @PathVariable Long id){
+	public ResponseEntity<BookDto> updateBook(@RequestBody BookDto bookDto, @PathVariable Long id){
 		return ResponseEntity.ok(service.updateBook(bookDto, id));
 	}
 	
