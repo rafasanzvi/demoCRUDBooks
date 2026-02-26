@@ -15,6 +15,11 @@ public interface BookService {
 	
 	List<BookDto> findByAuthor(String author);
 	
+	List<BookDto> findByPriceBetween(Double minPrice, Double maxPrice);
+	
+	//Filter with Specs
+	List<BookDto> filterBooks(String title, String author, Integer publicationYear, Double minPrice, Double maxPrice);
+	
 	//Post
 	BookDto createBook(BookDto bookDto);
 	

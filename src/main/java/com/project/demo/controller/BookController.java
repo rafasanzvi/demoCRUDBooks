@@ -47,6 +47,16 @@ public class BookController {
 		return ResponseEntity.ok(service.findByTitle(author));
 	}
 	
+	@GetMapping("/bookByPrice")
+	public ResponseEntity<List<BookDto>> searchByPriceBetween(@RequestParam Double minPrice, @RequestParam Double maxPrice) {
+		return ResponseEntity.ok(service.findByPriceBetween(minPrice, maxPrice));
+	}
+	
+	@GetMapping("/filterBooks")
+	public ResponseEntity<List<BookDto>> filterBooks(@RequestParam String title, @RequestParam String author, @RequestParam Integer publicationYear,@RequestParam Double minPrice, @RequestParam Double maxPrice) {
+		return ResponseEntity.ok(service.filterBooks(title, author, publicationYear, minPrice, maxPrice));
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<BookDto> createBook(@RequestBody BookDto bookDto){
 		return ResponseEntity.ok(service.createBook(bookDto));
