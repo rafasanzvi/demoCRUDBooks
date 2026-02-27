@@ -3,6 +3,10 @@ package com.project.demo.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,15 +69,33 @@ public class BookServiceimpl implements BookService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<BookDto> filterBooks(String title, String author, Integer publicationYear, Double minPrice, Double maxPrice) {
+	public Page<BookDto> filterBooks(
+			String title, 
+			String author, 
+			Integer publicationYear, 
+			Double minPrice, 
+			Double maxPrice, 
+			Integer page, 
+			Integer size, 
+			String sortBy, 
+			String sortDir) {
 		
+		//Building specification by combining the filters
 		Specification<Book> spec = Specification
 				.where(BookSpecifications.searchByTitle(title))
 				.and(BookSpecifications.searchByAuthor(author))
 				.and(BookSpecifications.searchByPublicationYear(publicationYear))
 				.and(BookSpecifications.searchByPrice(minPrice, maxPrice));
 		
-		return repository.findAll(spec).stream().map(mapper::toDto).toList();
+		//Dynamic sort is configured
+		Sort sort = Sort.by(sortBy != null ? sortBy : "id");
+		sort = "desc".equalsIgnoreCase(sortDir) ? sort.descending() : sort.ascending();
+		
+		//Pageable is created
+		Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 5, sort);
+		
+		//The query is executed and mapped to a dto, maintaining the page
+		return repository.findAll(spec, pageable).map(mapper::toDto);
 				
 	}
 

@@ -2,6 +2,8 @@ package com.project.demo.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.project.demo.dto.BookDto;
 
 public interface BookService {
@@ -18,7 +20,16 @@ public interface BookService {
 	List<BookDto> findByPriceBetween(Double minPrice, Double maxPrice);
 	
 	//Filter with Specs
-	List<BookDto> filterBooks(String title, String author, Integer publicationYear, Double minPrice, Double maxPrice);
+	Page<BookDto> filterBooks(
+			String title, 
+			String author, 
+			Integer publicationYear, 
+			Double minPrice, 
+			Double maxPrice, 
+			Integer page, 
+			Integer size, 
+			String sortBy, 
+			String sortDir);
 	
 	//Post
 	BookDto createBook(BookDto bookDto);

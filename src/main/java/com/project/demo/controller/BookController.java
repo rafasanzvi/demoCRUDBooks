@@ -2,6 +2,7 @@ package com.project.demo.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,8 +54,29 @@ public class BookController {
 	}
 	
 	@GetMapping("/filterBooks")
-	public ResponseEntity<List<BookDto>> filterBooks(@RequestParam String title, @RequestParam String author, @RequestParam Integer publicationYear,@RequestParam Double minPrice, @RequestParam Double maxPrice) {
-		return ResponseEntity.ok(service.filterBooks(title, author, publicationYear, minPrice, maxPrice));
+	public ResponseEntity<Page<BookDto>> filterBooks(
+			@RequestParam(required = false) String title, 
+			@RequestParam(required = false) String author, 
+			@RequestParam(required = false) Integer publicationYear,
+			@RequestParam(required = false) Double minPrice, 
+			@RequestParam(required = false) Double maxPrice,
+			@RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "title") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+			) {
+		
+		return ResponseEntity.ok(service.filterBooks(
+				title, 
+				author, 
+				publicationYear, 
+				minPrice, 
+				maxPrice,
+				page,
+				size,
+				sortBy,
+				sortDir
+				));
 	}
 	
 	@PostMapping("/create")
