@@ -3,6 +3,7 @@ package com.project.demo.controller;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.demo.dto.BookDto;
+import com.project.demo.common.BookSortField;
+import com.project.demo.domain.dto.BookDto;
+import com.project.demo.domain.dto.PageResponse;
 import com.project.demo.service.BookService;
 
 @RestController
@@ -54,7 +57,7 @@ public class BookController {
 	}
 	
 	@GetMapping("/filterBooks")
-	public ResponseEntity<Page<BookDto>> filterBooks(
+	public ResponseEntity<PageResponse<BookDto>> filterBooks(
 			@RequestParam(required = false) String title, 
 			@RequestParam(required = false) String author, 
 			@RequestParam(required = false) Integer publicationYear,
@@ -62,11 +65,11 @@ public class BookController {
 			@RequestParam(required = false) Double maxPrice,
 			@RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(defaultValue = "title") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
+            @RequestParam(defaultValue = "TITLE") BookSortField sortBy,
+            @RequestParam(defaultValue = "ASC") Sort.Direction sortDir
 			) {
 		
-		return ResponseEntity.ok(service.filterBooks(
+		Page<BookDto> pageResult = service.filterBooks(
 				title, 
 				author, 
 				publicationYear, 
@@ -76,7 +79,19 @@ public class BookController {
 				size,
 				sortBy,
 				sortDir
-				));
+				);
+		
+		PageResponse<BookDto> response = new PageResponse<>(
+		        pageResult.getContent(),
+		        pageResult.getNumber(),
+		        pageResult.getSize(),
+		        pageResult.getTotalElements(),
+		        pageResult.getTotalPages(),
+		        pageResult.isFirst(),
+		        pageResult.isLast()
+		);
+		
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/create")

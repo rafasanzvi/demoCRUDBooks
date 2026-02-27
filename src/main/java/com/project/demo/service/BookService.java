@@ -3,8 +3,10 @@ package com.project.demo.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
-import com.project.demo.dto.BookDto;
+import com.project.demo.common.BookSortField;
+import com.project.demo.domain.dto.BookDto;
 
 public interface BookService {
 
@@ -28,8 +30,8 @@ public interface BookService {
 			Double maxPrice, 
 			Integer page, 
 			Integer size, 
-			String sortBy, 
-			String sortDir);
+			BookSortField sortBy, 
+			Sort.Direction sortDir);
 	
 	//Post
 	BookDto createBook(BookDto bookDto);

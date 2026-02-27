@@ -11,7 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.project.demo.dto.BookDto;
+import com.project.demo.common.BookSortField;
+import com.project.demo.domain.dto.BookDto;
 import com.project.demo.entity.Book;
 import com.project.demo.mapper.MapperBook;
 import com.project.demo.repository.BookRepository;
@@ -77,8 +78,8 @@ public class BookServiceimpl implements BookService {
 			Double maxPrice, 
 			Integer page, 
 			Integer size, 
-			String sortBy, 
-			String sortDir) {
+			BookSortField sortBy,
+	        Sort.Direction sortDir) {
 		
 		//Building specification by combining the filters
 		Specification<Book> spec = Specification
@@ -88,8 +89,7 @@ public class BookServiceimpl implements BookService {
 				.and(BookSpecifications.searchByPrice(minPrice, maxPrice));
 		
 		//Dynamic sort is configured
-		Sort sort = Sort.by(sortBy != null ? sortBy : "id");
-		sort = "desc".equalsIgnoreCase(sortDir) ? sort.descending() : sort.ascending();
+		Sort sort = Sort.by(sortDir, sortBy.getFieldName());
 		
 		//Pageable is created
 		Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 5, sort);

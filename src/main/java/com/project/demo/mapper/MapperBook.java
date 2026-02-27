@@ -2,7 +2,7 @@ package com.project.demo.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.project.demo.dto.BookDto;
+import com.project.demo.domain.dto.BookDto;
 import com.project.demo.entity.Book;
 
 //@Mapper(componentModel = "spring")
